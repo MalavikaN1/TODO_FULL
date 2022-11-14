@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -12,34 +12,25 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 
-function ListComp({ getLocal, setGetLocal }) {
+function ListComp({getData,todoList}) {
 
-  const [todoList, setTodoList] = useState([]);
+  
   const [editText, setEditText] = useState("");
   const [showIndex, setShowIndex] = useState(-1);
   const [deleteFlag, setDeleteFlag] = useState(false);
 
-  useEffect(() => {
-    const getData = async () => {
-      fetch("list/displayData")                                                   //display data
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => setTodoList(data));
-    };
-    getData();
-  }, [todoList]);
 
   const deleteItem = async (index) => {
     const requestOptions = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" },                            //delete item
       body: JSON.stringify({ id: index }),
     };
     await fetch("list/delData", requestOptions);
+    getData();
   };
 
-  const editItem = (index,item) => {
+  const editItem = (index) => {
     setShowIndex(index);
     setDeleteFlag(true);
   };
@@ -67,6 +58,7 @@ function ListComp({ getLocal, setGetLocal }) {
     await fetch(`list/editData/${id}`, requestOptions);
     setEditText("");
     setDeleteFlag(false);
+    getData();
   };
 
   const navigate = useNavigate();

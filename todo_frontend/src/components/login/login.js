@@ -14,10 +14,12 @@ function Login() {
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
 
+
   const authenticate=()=>
 {
   if(email==="admin@gmail.com"&&password==="12345")
   {
+
     localStorage.setItem("isAuthenticated",true)
     navigate('/user');
   }
@@ -39,7 +41,7 @@ function Login() {
       </div>
       <div className="box"><TextField required onChange={(e)=>setEmail(e.target.value)} id="outlined-basic" label="Email" variant="outlined" /></div>
       <div className='box'><TextField required type="password" onChange={(e)=>setPassword(e.target.value)}  id="outlined-basic" label="Password" variant="outlined" /></div>
-      <div className='button'><Button  variant="contained" onClick={authenticate}>Sign In</Button></div>       
+      <div className='button'><Button  variant="contained"  onClick={authenticate}>Sign In</Button></div>       
     </div>
    </div>
   );

@@ -3,10 +3,26 @@ import './InputComp.css'
 import Button from '@mui/material/Button';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import ListComp from '../list/listComp';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 function InputComp()
 {
     const [inputValue,setInputValue]=useState('');
+    const [todoList, setTodoList] = useState([]);
+
+
+    const getData = async () => {
+        fetch("list/displayData")                                                   //display data
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => setTodoList(data));
+      };
+    
+      useEffect(() => {
+       
+        getData();
+      },[]);
+    
     
     const addNewItem=async()=>{
 
@@ -16,6 +32,7 @@ function InputComp()
             body:JSON.stringify({ text:inputValue })
         };
         await fetch('list/addData',requestOptions);
+        getData();
         setInputValue('');
     }
 
@@ -26,7 +43,7 @@ function InputComp()
                  <Button onClick={addNewItem} style={{borderRadius:50, margin:10, color:"black", border:"black"}} variant="outlined"><AddCircleOutlinedIcon/></Button>
             </div>
             <div>
-                <ListComp/>
+                <ListComp getData={getData} todoList={todoList}/>
             </div>
         </div>
     )
